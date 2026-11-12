@@ -1,0 +1,34 @@
+name: jse-sentiment
+channels:
+  - conda-forge
+dependencies:
+  # pytorch on conda-forge only supports up to 3.13 on Windows
+  - python=3.12
+
+  - pandas
+  - numpy
+  - scipy
+  - scikit-learn
+  - statsmodels
+
+  - yfinance
+  - google-cloud-bigquery
+  - db-dtypes
+  - pyarrow
+  - requests
+
+  - vadersentiment
+  - pytorch-cpu
+  - transformers
+
+  - streamlit
+  - plotly
+  - matplotlib
+  - seaborn
+
+  - jupyterlab
+  - ipykernel
+  - pyyaml
+  - python-dotenv
+  - tqdm
+  - pytest

@@ -1,0 +1,11 @@
+# Data and models are rebuilt by the pipeline, and some sources don't allow redistribution
+data/
+models/
+logs/
+
+.env
+secrets/
+
+__pycache__/
+.ipynb_checkpoints/
+.pytest_cache/
