@@ -33,6 +33,22 @@ features:
   # Days ahead for the movement target; 1 is the main model, 3 and 5 are for the sensitivity analysis
   horizons: [1, 3, 5]
 
+modelling:
+  # Train and tune on 2024-2025; the first half of 2026 is held out and only used once, for the final test
+  train_end: "2025-12-31"
+  cv_splits: 5
+  random_state: 42
+  main_target: target_up_1d
+  feature_sets: [baseline, all_sentiment, vader_score, finbert_score, lm_score, gdelt_tone]
+  sensitivity_targets: [target_excess_up_1d, target_up_3d, target_excess_up_3d, target_up_5d, target_excess_up_5d]
+  # log_volume is left out on purpose: its level differs by company, so it would act as a company identifier
+  baseline_features: [ret, ret_lag1, ret_lag2, ret_lag3, ret_lag4, ret_lag5, vol_5d, vol_20d, volume_ratio,
+                      hl_range, mkt_ret, mkt_ret_lag1, mkt_vol_20d, excess_ret]
+  grids:
+    logistic_regression: {C: [0.01, 0.1, 1.0]}
+    random_forest: {max_depth: [3, 6, null], min_samples_leaf: [20, 50]}
+    svm_rbf: {C: [0.1, 1.0, 10.0]}
+
 market:
   timezone: Africa/Johannesburg
   # The JSE closing auction ends at 17:00, so text from then on can only move the next session

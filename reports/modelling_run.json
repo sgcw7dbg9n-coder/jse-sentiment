@@ -1,0 +1,9 @@
+{
+  "run_at": "2026-11-12T14:07:53+00:00",
+  "train_end": "2025-12-31",
+  "cv_splits": 5,
+  "random_state": 42,
+  "targets": [
+    "target_up_1d"
+  ]
+}
