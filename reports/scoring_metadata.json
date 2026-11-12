@@ -1,0 +1,11 @@
+{
+  "scored_at": "2026-11-12T13:51:17+00:00",
+  "headlines": 4235,
+  "finbert_model": "ProsusAI/finbert",
+  "finbert_revision": "unknown",
+  "transformers": "5.22.2",
+  "vadersentiment": "3.3.2",
+  "lm_dictionary": "Loughran-McDonald_MasterDictionary_1993-2025.csv",
+  "lm_positive_words": 347,
+  "lm_negative_words": 2345
+}

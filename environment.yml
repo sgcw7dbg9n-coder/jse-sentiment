@@ -16,6 +16,7 @@ dependencies:
   - db-dtypes
   - pyarrow
   - requests
+  - beautifulsoup4
 
   - vadersentiment
   - pytorch-cpu

@@ -1,0 +1,41 @@
+feature,group,description
+ret,market,"Return on day t, close t-1 to close t"
+ret_lag1,market,Return 1 session(s) before day t
+ret_lag2,market,Return 2 session(s) before day t
+ret_lag3,market,Return 3 session(s) before day t
+ret_lag4,market,Return 4 session(s) before day t
+ret_lag5,market,Return 5 session(s) before day t
+vol_5d,market,Standard deviation of daily returns over the last 5 sessions
+vol_20d,market,Standard deviation of daily returns over the last 20 sessions
+volume_ratio,market,Volume on day t divided by its 20-session average
+log_volume,market,Natural log of (1 + shares traded on day t)
+hl_range,market,"Intraday high minus low, as a share of the close"
+mkt_ret,market,Satrix 40 return on day t (market proxy)
+mkt_ret_lag1,market,Satrix 40 return on the session before day t
+mkt_vol_20d,market,Satrix 40 20-session return volatility
+excess_ret,market,Company return minus Satrix 40 return on day t
+target_up_1d,target,1 if the close 1 session(s) after day t is above the close on day t
+target_excess_up_1d,target,1 if the 1-session return beats the Satrix 40 over the same sessions
+target_up_3d,target,1 if the close 3 session(s) after day t is above the close on day t
+target_excess_up_3d,target,1 if the 3-session return beats the Satrix 40 over the same sessions
+target_up_5d,target,1 if the close 5 session(s) after day t is above the close on day t
+target_excess_up_5d,target,1 if the 5-session return beats the Satrix 40 over the same sessions
+has_news,news,1 if at least one headline was assigned to day t
+news_count,news,Headlines assigned to day t (after 17:00 rule)
+news_outlets,news,"Outlets carrying those headlines, counting syndicated copies"
+finbert_pos_share,news,Share of day t headlines FinBERT labels positive
+finbert_neg_share,news,Share of day t headlines FinBERT labels negative
+vader_score_mean,news,Average vader_score of day t headlines (0 if none)
+finbert_score_mean,news,Average finbert_score of day t headlines (0 if none)
+lm_score_mean,news,Average lm_score of day t headlines (0 if none)
+gdelt_tone_mean,news,Average gdelt_tone of day t headlines (0 if none)
+news_count_3d,news,Headlines over the last 3 sessions including day t
+vader_score_mean_3d,news,Headline-weighted average vader_score over the last 3 sessions (0 if none)
+finbert_score_mean_3d,news,Headline-weighted average finbert_score over the last 3 sessions (0 if none)
+lm_score_mean_3d,news,Headline-weighted average lm_score over the last 3 sessions (0 if none)
+gdelt_tone_mean_3d,news,Headline-weighted average gdelt_tone over the last 3 sessions (0 if none)
+news_count_5d,news,Headlines over the last 5 sessions including day t
+vader_score_mean_5d,news,Headline-weighted average vader_score over the last 5 sessions (0 if none)
+finbert_score_mean_5d,news,Headline-weighted average finbert_score over the last 5 sessions (0 if none)
+lm_score_mean_5d,news,Headline-weighted average lm_score over the last 5 sessions (0 if none)
+gdelt_tone_mean_5d,news,Headline-weighted average gdelt_tone over the last 5 sessions (0 if none)

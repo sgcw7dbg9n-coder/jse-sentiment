@@ -12,6 +12,27 @@ market_proxy:
   ticker: STX40.JO
   name: Satrix 40 ETF
 
+sens:
+  base_url: https://clientportal.jse.co.za
+  # robots.txt allows general crawlers; keep the pace gentle and identify the project honestly
+  delay_seconds: 3
+  user_agent: "jse-sentiment-research/1.0 (Eduvos honours research project; non-commercial academic use)"
+
+sentiment:
+  finbert_model: ProsusAI/finbert
+  batch_size: 32
+  # Download from https://sraf.nd.edu/loughranmcdonald-master-dictionary/ (free for individual researchers)
+  lm_dictionary: data/external/Loughran-McDonald_MasterDictionary_1993-2025.csv
+
+features:
+  scores: [vader_score, finbert_score, lm_score, gdelt_tone]
+  rolling_windows: [3, 5]
+  return_lags: 5
+  volatility_windows: [5, 20]
+  volume_window: 20
+  # Days ahead for the movement target; 1 is the main model, 3 and 5 are for the sensitivity analysis
+  horizons: [1, 3, 5]
+
 market:
   timezone: Africa/Johannesburg
   # The JSE closing auction ends at 17:00, so text from then on can only move the next session
@@ -42,25 +63,27 @@ gdelt:
 # pattern: RE2 regex matched against lowercased GDELT headlines.
 # exclude: Python regex (case-insensitive) for headlines that name the company without being
 # about it: sponsored events and venues, economic indices, and bank economists' commentary.
+# sens_ids: the company's "Equity Issuer" entries on the JSE client portal SENS page.
 companies:
   - {ticker: SBK.JO, name: Standard Bank, sector: Banking, pattern: '\bstandard bank\b',
-     exclude: 'joy of jazz|young artist|economist|[-–] standard bank$'}
+     exclude: 'joy of jazz|young artist|economist|[-–] standard bank$', sens_ids: [1459, 1460]}
   - {ticker: ABG.JO, name: Absa, sector: Banking, pattern: '\babsa\b',
-     exclude: 'absa pmi|purchasing managers|cape epic|absa premiership|run your city|economist|[-–] absa$'}
+     exclude: 'absa pmi|purchasing managers|cape epic|absa premiership|run your city|economist|[-–] absa$',
+     sens_ids: [1596]}
   - {ticker: NED.JO, name: Nedbank, sector: Banking, pattern: '\bnedbank\b',
-     exclude: 'nedbank cup|golf challenge|economist|[-–] nedbank$'}
+     exclude: 'nedbank cup|golf challenge|economist|[-–] nedbank$', sens_ids: [3629, 1338]}
   - {ticker: FSR.JO, name: FirstRand, sector: Banking, pattern: '\bfirstrand\b|\bfirst national bank\b|\bfnb\b',
-     exclude: 'fnb stadium|fnb/ber|ber/fnb|consumer confidence|economist|[-–] fnb$'}
+     exclude: 'fnb stadium|fnb/ber|ber/fnb|consumer confidence|economist|[-–] fnb$', sens_ids: [1665, 1664]}
   - {ticker: VOD.JO, name: Vodacom, sector: Telecommunications, pattern: '\bvodacom\b',
-     exclude: 'vodacom bulls|durban july|vodacom cup'}
+     exclude: 'vodacom bulls|durban july|vodacom cup', sens_ids: [2659]}
   - {ticker: MTN.JO, name: MTN Group, sector: Telecommunications, pattern: '\bmtn\b',
-     exclude: '\bmtn ?8\b'}
+     exclude: '\bmtn ?8\b', sens_ids: [1863]}
   - {ticker: WHL.JO, name: Woolworths, sector: Retail, pattern: '\bwoolworths\b',
-     exclude: 'woolworths group|australia'}
-  - {ticker: SHP.JO, name: Shoprite, sector: Retail, pattern: '\bshoprite\b'}
-  - {ticker: SSW.JO, name: Sibanye-Stillwater, sector: Mining, pattern: '\bsibanye\b'}
+     exclude: 'woolworths group|australia', sens_ids: [1944]}
+  - {ticker: SHP.JO, name: Shoprite, sector: Retail, pattern: '\bshoprite\b', sens_ids: [1559, 1560]}
+  - {ticker: SSW.JO, name: Sibanye-Stillwater, sector: Mining, pattern: '\bsibanye\b', sens_ids: [5443]}
   - {ticker: SOL.JO, name: Sasol, sector: Energy, pattern: '\bsasol\b',
-     exclude: 'sasol banyana|sasol league|women.s league|solar challenge'}
+     exclude: 'sasol banyana|sasol league|women.s league|solar challenge', sens_ids: [1506]}
 
 excluded_candidates:
   - {ticker: CPI.JO, name: Capitec, articles: 224, headline_mentions: 120}
