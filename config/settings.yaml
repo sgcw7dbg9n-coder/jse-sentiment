@@ -1,0 +1,52 @@
+study_period:
+  start: "2024-01-01"
+  end: "2026-06-30"
+
+prices:
+  # Starts early so lagged returns and 20-day volatility exist on the first study day,
+  # and runs past the study end so 5-day-ahead targets exist for late June 2026
+  start: "2023-10-01"
+  end: "2026-07-15"
+
+market_proxy:
+  ticker: STX40.JO
+  name: Satrix 40 ETF
+
+gdelt:
+  max_gb: 500
+  domains:
+    - moneyweb.co.za
+    - businesslive.co.za
+    - news24.com
+    - fin24.com
+    - iol.co.za
+    - dailymaverick.co.za
+    - businesstech.co.za
+    - citizen.co.za
+    - timeslive.co.za
+    - techcentral.co.za
+    - mybroadband.co.za
+    - miningweekly.com
+    - engineeringnews.co.za
+    - bizcommunity.com
+
+# Final sample: the 10 of 14 candidates with the most headline mentions in the
+# 2026-11-12 GDELT run (210.5 GB scanned, 5,244 article/ticker rows).
+# Patterns are RE2 regex matched against lowercased GDELT organisation names and headlines.
+companies:
+  - {ticker: SBK.JO, name: Standard Bank, sector: Banking, pattern: '\bstandard bank\b'}
+  - {ticker: ABG.JO, name: Absa, sector: Banking, pattern: '\babsa\b'}
+  - {ticker: NED.JO, name: Nedbank, sector: Banking, pattern: '\bnedbank\b'}
+  - {ticker: FSR.JO, name: FirstRand, sector: Banking, pattern: '\bfirstrand\b|\bfirst national bank\b|\bfnb\b'}
+  - {ticker: VOD.JO, name: Vodacom, sector: Telecommunications, pattern: '\bvodacom\b'}
+  - {ticker: MTN.JO, name: MTN Group, sector: Telecommunications, pattern: '\bmtn\b'}
+  - {ticker: WHL.JO, name: Woolworths, sector: Retail, pattern: '\bwoolworths\b'}
+  - {ticker: SHP.JO, name: Shoprite, sector: Retail, pattern: '\bshoprite\b'}
+  - {ticker: SSW.JO, name: Sibanye-Stillwater, sector: Mining, pattern: '\bsibanye\b'}
+  - {ticker: SOL.JO, name: Sasol, sector: Energy, pattern: '\bsasol\b'}
+
+excluded_candidates:
+  - {ticker: CPI.JO, name: Capitec, articles: 224, headline_mentions: 120}
+  - {ticker: AGL.JO, name: Anglo American, articles: 176, headline_mentions: 117}
+  - {ticker: NPN.JO, name: Naspers, articles: 39, headline_mentions: 35}
+  - {ticker: PRX.JO, name: Prosus, articles: 30, headline_mentions: 30}

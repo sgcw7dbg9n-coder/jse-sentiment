@@ -1,22 +1,14 @@
 import logging
-from datetime import datetime, timezone
-from pathlib import Path
 
 import pandas as pd
-import yaml
 import yfinance as yf
 
-ROOT = Path(__file__).resolve().parents[1]
+from common import ROOT, append_log, load_settings, utc_now
+
 PRICES_PATH = ROOT / "data" / "raw" / "prices.csv"
-LOG_PATH = ROOT / "logs" / "collection_log.csv"
 PRICE_COLUMNS = ["date", "open", "high", "low", "close", "volume"]
 
 log = logging.getLogger("collect_prices")
-
-
-def load_settings() -> dict:
-    with open(ROOT / "config" / "settings.yaml", encoding="utf-8") as f:
-        return yaml.safe_load(f)
 
 
 def fetch_history(symbol: str, start: str, end: str) -> pd.DataFrame:
@@ -31,11 +23,6 @@ def fetch_history(symbol: str, start: str, end: str) -> pd.DataFrame:
     return history.rename_axis("date").reset_index()[PRICE_COLUMNS]
 
 
-def append_log(rows: list[dict]) -> None:
-    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(rows).to_csv(LOG_PATH, mode="a", header=not LOG_PATH.exists(), index=False)
-
-
 def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     settings = load_settings()
@@ -45,12 +32,11 @@ def main() -> None:
     proxy = settings["market_proxy"]
     targets[proxy["ticker"]] = proxy["name"]
 
-    run_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    run_at = utc_now()
     frames, log_rows = [], []
 
     for symbol, name in targets.items():
-        entry = {"run_at": run_at, "source": "yfinance", "ticker": symbol, "rows": 0,
-                 "first_date": None, "last_date": None, "status": "ok", "message": ""}
+        entry = {"run_at": run_at, "source": "yfinance", "ticker": symbol, "rows": 0, "status": "ok", "message": ""}
         try:
             prices = fetch_history(symbol, start, end)
         except Exception as exc:  # yfinance surfaces HTTP, JSON and parsing failures with no common base class
