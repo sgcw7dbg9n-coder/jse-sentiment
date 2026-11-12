@@ -23,3 +23,8 @@ def append_log(rows: list[dict]) -> None:
     pd.DataFrame(rows, columns=LOG_COLUMNS).to_csv(
         LOG_PATH, mode="a", header=not LOG_PATH.exists(), index=False
     )
+
+
+def is_sa_domain(domains: pd.Series, settings: dict) -> pd.Series:
+    gdelt = settings["gdelt"]
+    return domains.str.endswith(tuple(gdelt["sa_domain_suffixes"])) | domains.isin(gdelt["sa_extra_domains"])

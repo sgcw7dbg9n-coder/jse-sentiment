@@ -12,38 +12,55 @@ market_proxy:
   ticker: STX40.JO
   name: Satrix 40 ETF
 
+market:
+  timezone: Africa/Johannesburg
+  # The JSE closing auction ends at 17:00, so text from then on can only move the next session
+  close_time: "17:00"
+
 gdelt:
   max_gb: 500
-  domains:
-    - moneyweb.co.za
-    - businesslive.co.za
+  # Headline matches across every outlet; SA outlets are selected afterwards in clean_news.py
+  query: sql/03_headline_mentions_all_domains.sql
+  output: data/raw/gdelt_headlines.parquet
+  # An outlet counts as South African if its domain ends in one of these suffixes or is listed below
+  sa_domain_suffixes: [.co.za, .org.za]
+  sa_extra_domains:
     - news24.com
     - fin24.com
-    - iol.co.za
-    - dailymaverick.co.za
-    - businesstech.co.za
-    - citizen.co.za
-    - timeslive.co.za
-    - techcentral.co.za
-    - mybroadband.co.za
     - miningweekly.com
-    - engineeringnews.co.za
     - bizcommunity.com
+    - sabcnews.com
+    - enca.com
+    - biznews.com
+    - dailyinvestor.com
+    - thesouthafrican.com
+    - cnbcafrica.com
+    - miningmx.com
 
 # Final sample: the 10 of 14 candidates with the most headline mentions in the
 # 2026-11-12 GDELT run (210.5 GB scanned, 5,244 article/ticker rows).
-# Patterns are RE2 regex matched against lowercased GDELT organisation names and headlines.
+# pattern: RE2 regex matched against lowercased GDELT headlines.
+# exclude: Python regex (case-insensitive) for headlines that name the company without being
+# about it: sponsored events and venues, economic indices, and bank economists' commentary.
 companies:
-  - {ticker: SBK.JO, name: Standard Bank, sector: Banking, pattern: '\bstandard bank\b'}
-  - {ticker: ABG.JO, name: Absa, sector: Banking, pattern: '\babsa\b'}
-  - {ticker: NED.JO, name: Nedbank, sector: Banking, pattern: '\bnedbank\b'}
-  - {ticker: FSR.JO, name: FirstRand, sector: Banking, pattern: '\bfirstrand\b|\bfirst national bank\b|\bfnb\b'}
-  - {ticker: VOD.JO, name: Vodacom, sector: Telecommunications, pattern: '\bvodacom\b'}
-  - {ticker: MTN.JO, name: MTN Group, sector: Telecommunications, pattern: '\bmtn\b'}
-  - {ticker: WHL.JO, name: Woolworths, sector: Retail, pattern: '\bwoolworths\b'}
+  - {ticker: SBK.JO, name: Standard Bank, sector: Banking, pattern: '\bstandard bank\b',
+     exclude: 'joy of jazz|young artist|economist|[-–] standard bank$'}
+  - {ticker: ABG.JO, name: Absa, sector: Banking, pattern: '\babsa\b',
+     exclude: 'absa pmi|purchasing managers|cape epic|absa premiership|run your city|economist|[-–] absa$'}
+  - {ticker: NED.JO, name: Nedbank, sector: Banking, pattern: '\bnedbank\b',
+     exclude: 'nedbank cup|golf challenge|economist|[-–] nedbank$'}
+  - {ticker: FSR.JO, name: FirstRand, sector: Banking, pattern: '\bfirstrand\b|\bfirst national bank\b|\bfnb\b',
+     exclude: 'fnb stadium|fnb/ber|ber/fnb|consumer confidence|economist|[-–] fnb$'}
+  - {ticker: VOD.JO, name: Vodacom, sector: Telecommunications, pattern: '\bvodacom\b',
+     exclude: 'vodacom bulls|durban july|vodacom cup'}
+  - {ticker: MTN.JO, name: MTN Group, sector: Telecommunications, pattern: '\bmtn\b',
+     exclude: '\bmtn ?8\b'}
+  - {ticker: WHL.JO, name: Woolworths, sector: Retail, pattern: '\bwoolworths\b',
+     exclude: 'woolworths group|australia'}
   - {ticker: SHP.JO, name: Shoprite, sector: Retail, pattern: '\bshoprite\b'}
   - {ticker: SSW.JO, name: Sibanye-Stillwater, sector: Mining, pattern: '\bsibanye\b'}
-  - {ticker: SOL.JO, name: Sasol, sector: Energy, pattern: '\bsasol\b'}
+  - {ticker: SOL.JO, name: Sasol, sector: Energy, pattern: '\bsasol\b',
+     exclude: 'sasol banyana|sasol league|women.s league|solar challenge'}
 
 excluded_candidates:
   - {ticker: CPI.JO, name: Capitec, articles: 224, headline_mentions: 120}
