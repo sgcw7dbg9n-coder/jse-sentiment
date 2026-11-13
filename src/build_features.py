@@ -135,8 +135,8 @@ def main() -> None:
     news = pd.read_parquet(NEWS_PATH)
     missing_scores = [score for score in cfg["scores"] if score not in news.columns]
     if missing_scores:
-        raise SystemExit(f"{NEWS_PATH.name} has no {', '.join(missing_scores)} column; run the scorer first "
-                         "(score_llm.py for llm_score) or remove it from features.scores")
+        raise SystemExit(f"{NEWS_PATH.name} has no {', '.join(missing_scores)} column; run score_news.py first "
+                         "or remove it from features.scores")
     panel, news_docs = news_features(news, panel, cfg)
     docs += news_docs
 
