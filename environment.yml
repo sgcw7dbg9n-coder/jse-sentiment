@@ -22,7 +22,8 @@ dependencies:
   - pytorch-cpu
   - transformers
 
-  - streamlit
+  # 1.50+ for the light and dark themes in .streamlit/config.toml
+  - streamlit>=1.50
   - plotly
   - matplotlib
   - seaborn
